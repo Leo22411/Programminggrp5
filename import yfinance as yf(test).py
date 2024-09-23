@@ -226,6 +226,7 @@ def main():
 
     # Plot data, simple moving averages, and prediction
     plot_data_with_prediction(data, sma, rsis, ticker, prediction, next_day_price,market_cap_message)
+    Print("lol")
 
 if __name__ == "__main__":
     main()
