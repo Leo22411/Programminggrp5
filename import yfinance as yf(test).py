@@ -1,6 +1,7 @@
 import yfinance as yf
 import pandas as pd
 import numpy as np
+import datetime
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
@@ -31,6 +32,8 @@ us_stocks = [
     'PDD',   # Pinduoduo Inc.
     'FUTU'   # Futu Holdings Limited
 ]
+
+today = datetime.datetime.today()
 
 # Function to fetch historical data
 def fetch_data(ticker, start_date, end_date):
@@ -159,7 +162,7 @@ def plot_data_with_prediction(data, sma, rsis, ticker, prediction, next_day_pric
     ax1.grid(True)
 
     # Add the prediction text and next day price prediction on the plot
-    ax1.text(0.12, 0.95, f"Prediction: {prediction}\nNext Day Predicted Price: {next_day_price:.2f}  \n{market_cap_message}", 
+    ax1.text(0.12, 0.95, f"Prediction: {prediction}\nNext Day Predicted Price: {next_day_price:.2f}  \n{market_cap_message}\nToday date:{today:%B %d, %Y}", 
              transform=ax1.transAxes, fontsize=8, verticalalignment='top', 
              bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
 
@@ -203,11 +206,6 @@ def main():
     # Calculate RSIs
     rsis = calculate_rsi(data)
 
-
-
-    
-    
-
     
     # Fetch market capitalization and shares outstanding
     current_market_cap, shares_outstanding = fetch_market_cap_and_shares(ticker)
@@ -226,7 +224,7 @@ def main():
 
     # Plot data, simple moving averages, and prediction
     plot_data_with_prediction(data, sma, rsis, ticker, prediction, next_day_price,market_cap_message)
-    Print("lol")
+    
 
 if __name__ == "__main__":
     main()
