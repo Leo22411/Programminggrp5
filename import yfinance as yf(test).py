@@ -68,7 +68,7 @@ def predict_next_day_price(data):
 
     # Calculate RMSE (Root Mean Squared Error)
     rmse = np.sqrt(mean_squared_error(y_test, y_pred))
-    print(f"Model RMSE: {rmse:.2f}")
+    print(f"Model RMSE: {rmse:.2f}")#make it percentage !!!!
 
     # Predict the next day's price
     next_day_prediction = model.predict([X.iloc[-1]])[0]
@@ -224,7 +224,7 @@ def main():
 
     # Plot data, simple moving averages, and prediction
     plot_data_with_prediction(data, sma, rsis, ticker, prediction, next_day_price,market_cap_message)
-    
+    print("lol")
 
 if __name__ == "__main__":
     main()
