@@ -43,8 +43,9 @@ def fetch_data(ticker, start_date, end_date):
 
 # Function to add features for the model (lagged prices)
 def add_lagged_features(data, lags=5):
-    for lag in range(1, lags+1):
-        data[f'lag_{lag}'] = data['Close'].shift(lag)
+    for lag in range(1, lags + 1):
+        data[f'lag_close_{lag}'] = data['Close'].shift(lag)
+        data[f'lag_volume_{lag}'] = data['Volume'].shift(lag)
     data.dropna(inplace=True)
     return data
 
@@ -53,7 +54,7 @@ def predict_next_day_price(data):
     data = add_lagged_features(data)
 
     # Define features (X) and target (y)
-    X = data[[f'lag_{i}' for i in range(1, 6)]]
+    X = data[[f'lag_close_{i}' for i in range(1, 6)] + [f'lag_volume_{i}' for i in range(1, 6)]]
     y = data['Close']
 
     # Split the data into training and testing sets
@@ -68,7 +69,8 @@ def predict_next_day_price(data):
 
     # Calculate RMSE (Root Mean Squared Error)
     rmse = np.sqrt(mean_squared_error(y_test, y_pred))
-    print(f"Model RMSE: {rmse:.2f}")#make it percentage !!!!
+    rmse_percentage = (rmse / np.mean(y_test)) * 100
+    print(f"Model RMSE: {rmse_percentage:.2f}%")
 
     # Predict the next day's price
     next_day_prediction = model.predict([X.iloc[-1]])[0]
@@ -186,6 +188,7 @@ def plot_data_with_prediction(data, sma, rsis, ticker, prediction, next_day_pric
 
     plt.tight_layout()
     plt.show()
+
 
 # Main function to execute the program
 def main():
